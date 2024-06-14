@@ -20,27 +20,21 @@ public class ListCommand implements Command {
   @Override
   public Response execute() {
     List<Archive> archives = currentDirectory.list();
+    String archiveNames;
     switch (flag) {
-      case "" -> {
-        String archiveNames =
-            archives.stream().map(Archive::getName).collect(Collectors.joining(" "));
+      case "":
+        archiveNames = archives.stream().map(Archive::getName).collect(Collectors.joining(" "));
         return new Response(archiveNames, currentDirectory);
-      }
-      case "--ord=asc" -> {
+      case "--ord=asc":
         archives.sort(Comparator.comparing(Archive::getName));
-        String archiveNames =
-            archives.stream().map(Archive::getName).collect(Collectors.joining(" "));
+        archiveNames = archives.stream().map(Archive::getName).collect(Collectors.joining(" "));
         return new Response(archiveNames, currentDirectory);
-      }
-      case "--ord=desc" -> {
+      case "--ord=desc":
         archives.sort((a1, a2) -> a2.getName().compareTo(a1.getName()));
-        String archiveNames =
-            archives.stream().map(Archive::getName).collect(Collectors.joining(" "));
+        archiveNames = archives.stream().map(Archive::getName).collect(Collectors.joining(" "));
         return new Response(archiveNames, currentDirectory);
-      }
-      default -> {
+      default:
         return new Response("Invalid flag", null);
-      }
     }
   }
 }
